@@ -6,6 +6,7 @@ const upload = multer({ dest: "uploads/" });
 const router = express.Router();
 const userController = require("../controllers/userController");
 const { body } = require("express-validator");
+const { sanitizeBody } = require('express-validator');
 
 router.get("/", userController.user_list_get);
 router.get("/:id", userController.user_get);
@@ -18,13 +19,14 @@ router.post("/", upload.single("user"), (req, res, next) => {
   //req.body.filename = req.file.filename;
   next();
 });
-
+// Tupla escapet(), kummatkin tavat toimivia.
 router.post(
   "/",
   [
-    body("name", 'minimium 3 characters').isLength({ min: 3 }),
+    body("name", 'minimium 3 characters').isLength({ min: 3 }).escape(),
     body("email", 'email not valid').isEmail(),
-    body("passwd", 'one uppercase letter. minimum 8 characters').matches('(?=.*[A-Z]).{8,}')
+    body("passwd", 'one uppercase letter. minimum 8 characters').matches('(?=.*[A-Z]).{8,}'),
+    sanitizeBody('nname').escape(),
   ],
   userController.user_create_post
 );
