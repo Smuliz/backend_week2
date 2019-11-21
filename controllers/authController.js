@@ -1,6 +1,6 @@
 "use strict";
 const jwt = require("jsonwebtoken");
-const passport = require("../utils/pass.js");
+const passport = require("passport");
 
 
 const login = (req, res) => {

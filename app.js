@@ -21,7 +21,7 @@ app.use(express.static("uploads"));
 
 app.use("/cat", passport.authenticate('jwt', {session:false}), catRoute);
 app.use("/user", passport.authenticate('jwt', {session:false}), userRoute);
-app.use('/auth', authRoute);
+app.use("/auth", authRoute);
 
 app.get("/", (req, res, next) => {
   res.json({ msg: "This is CORS-enabled for all origins!" });

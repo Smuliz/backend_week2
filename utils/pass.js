@@ -8,21 +8,21 @@ const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
 
 // local strategy for username password login
-// passport.use(
-//   new Strategy(async (username, password, done) => {
-//     const params = [username, password];
-//     try {
-//       const [user] = await userModel.getUserLogin(params);
-//       console.log("Local strategy", user); // result is binary row
-//       if (user === undefined) {
-//         return done(null, false, { message: "Incorrect email or password." });
-//       }
-//       return done(null, { ...user }, { message: "Logged In Successfully" }); // use spread syntax to create shallow copy to get rid of binary row type
-//     } catch (err) {
-//       return done(err);
-//     }
-//   })
-// );
+passport.use(
+  new Strategy(async (username, password, done) => {
+    const params = [username, password];
+    try {
+      const [user] = await userModel.getUserLogin(params);
+      console.log("Local strategy", user); // result is binary row
+      if (user === undefined) {
+        return done(null, false, { message: "Incorrect email or password." });
+      }
+      return done(null, { ...user }, { message: "Logged In Successfully" }); // use spread syntax to create shallow copy to get rid of binary row type
+    } catch (err) {
+      return done(err);
+    }
+  })
+);
 
 passport.use(
   new JWTStrategy(
@@ -37,7 +37,7 @@ passport.use(
             if (user === undefined)
                 return done(null, false);
             
-            return done(null, {...user});
+            return done(null, {...user[0]});
         } catch (err) {
             return done(err);
         }
