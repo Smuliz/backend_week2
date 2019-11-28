@@ -1,11 +1,10 @@
 "use strict";
 const passport = require("passport");
-const Strategy = require("passport-local").Strategy;
-const userModel = require("../models/userModel");
-
 const passportJWT = require("passport-jwt");
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
+const Strategy = require("passport-local").Strategy;
+const userModel = require("../models/userModel");
 
 // local strategy for username password login
 passport.use(
@@ -17,7 +16,7 @@ passport.use(
       if (user === undefined) {
         return done(null, false, { message: "Incorrect email or password." });
       }
-      return done(null, { ...user }, { message: "Logged In Successfully" }); // use spread syntax to create shallow copy to get rid of binary row type
+      return done(null, {...user}, { message: "Logged In Successfully" }); // use spread syntax to create shallow copy to get rid of binary row type
     } catch (err) {
       return done(err);
     }
@@ -33,11 +32,12 @@ passport.use(
     async (jwtPayload, done) => {
         console.log('Payoad', jwtPayload);
         try {
-            const [user] = await userModel.getUser(jwtPayload.user_id);
-            if (user === undefined)
+            const [user] = await userModel.getUserLogin(jwtPayload.user_id);
+            if ([user] === undefined) {
                 return done(null, false);
-            
+            } else {
             return done(null, {...user[0]});
+            }
         } catch (err) {
             return done(err);
         }
