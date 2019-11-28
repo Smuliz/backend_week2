@@ -5,6 +5,9 @@ const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
 const Strategy = require("passport-local").Strategy;
 const userModel = require("../models/userModel");
+const bcrypt = require("bcryptjs");
+const salt = bcrypt.genSaltSync(10);
+
 
 // local strategy for username password login
 passport.use(
@@ -16,9 +19,10 @@ passport.use(
       if (user === undefined) {
         return done(null, false, { message: "Incorrect email." });
       }
-      if (user.password !== password) {
+      if (!bcrypt.compareSync(password, user.password)) {
         return done(null, false, { message: "Incorrect password." });
       }
+      delete user.password; // poistetaan salasana user objektista ennen returnia
       return done(null, {...user}, { message: "Logged In Successfully" }); // use spread syntax to create shallow copy to get rid of binary row type
     } catch (err) {
       return done(err);

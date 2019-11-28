@@ -2,6 +2,7 @@
 // catController
 const catModel = require("../models/catModel");
 const { validationResult } = require("express-validator");
+const resize = require("../utils/resize.js");
 
 const cat_create_post = async (req, res) => {
   const errors = validationResult(req);
@@ -9,6 +10,9 @@ const cat_create_post = async (req, res) => {
     console.log(errors);
     res.status(422).json({ errors: errors.array() });
   } else {
+    // create thumbnails
+    const thumb = await resize.makeThumbnail(req.file.path, req.file.filename);
+    console.log("thumb", thumb);
     const params = [
       req.body.name,
       req.body.age,

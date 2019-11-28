@@ -20,16 +20,7 @@ router.post("/", upload.single("user"), (req, res, next) => {
   next();
 });
 // Tupla escapet(), kummatkin tavat toimivia.
-router.post(
-  "/",
-  [
-    body("name", 'minimium 3 characters').isLength({ min: 3 }).escape(),
-    body("email", 'email not valid').isEmail(),
-    body("passwd", 'one uppercase letter. minimum 8 characters').matches('(?=.*[A-Z]).{8,}'),
-    sanitizeBody('nname').escape(),
-  ],
-  userController.user_create_post
-);
+
 
 // router.post('/user', (req, res) => {
 //     res.send('With this endpoint you can add users.');

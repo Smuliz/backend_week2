@@ -9,6 +9,8 @@ const catRoute = require("./routes/catRoute.js");
 const userRoute = require("./routes/userRoute.js");
 const authRoute = require("./routes/authRoute.js")
 
+app.use('/thumbnails', express.static('thumbnails'));
+
 app.use(cors());
 
 app.use(express.json());
