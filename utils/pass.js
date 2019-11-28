@@ -39,7 +39,7 @@ passport.use(
             if (user === undefined) {
                 return done(null, false);
             } else {
-            return done(null, {...user[0]});
+            return done(null, {...user});
             }
         } catch (err) {
             return done(err);
